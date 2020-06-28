@@ -1,3 +1,5 @@
+
+---
 # Getting Started
 
 * Install go 1.13+
@@ -16,3 +18,5 @@
     * windows - install gflw for windows <https://www.glfw.org/docs/latest/compile.html#compile_deps>
         * enabled flutter to build for windows
             * > flutter config --enable-windows-desktop
+
+---
