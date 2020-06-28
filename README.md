@@ -1,16 +1,18 @@
-# golang_flutter_demo
+# Getting Started
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Install go 1.13+
+    * instructions can be found at <https://golang.org/doc/install>
+* Install flutter
+    * instructions can be found at <https://flutter.dev/docs/get-started/install>
+* Install go-flutter
+    * install hover (flutters unofficial go client)
+        * > GO111MODULE=on go get -u -a github.com/go-flutter-desktop/hover
+    * mac - have xcode installed
+        * enable flutter to build for mac
+            * > flutter config --enable-macos-desktop
+    * linux - install the following packages 'libgl1-mesa-dev xorg-dev'
+        * enable flutter to build for linux
+            * > flutter config --enable-linux-desktop
+    * windows - install gflw for windows <https://www.glfw.org/docs/latest/compile.html#compile_deps>
+        * enabled flutter to build for windows
+            * > flutter config --enable-windows-desktop
