@@ -1,3 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+
+        .remark-code,
+        .remark-inline-code {
+            font-family: 'Ubuntu Mono';
+        }
+    </style>
+</head>
+
+<body>
+    <textarea id="source">
 <!-- class: center, middle -->
 
 # Golang & Flutter
@@ -6,16 +37,9 @@
 ---
 
 <!-- class: left, middle -->
-# Prerequisites
- * Know golang ✅
- * Have introductory knowledge of MVVM, MVC, MVP, etc (UI development) ✅
-
----
-
-<!-- class: left, middle -->
 
 # What is this exactly?
-This is a great way to develop truly cross platform desktop and mobile applications rapidly, and beautifly.
+This is a great way to develop truly cross platform desktop applications rapidly, and beautifly.
 
 It's an intersection between:
 * Flutter's approach to declarative UI.
@@ -55,24 +79,6 @@ This could range from any of the following situations:
 * Has primarily been developed with cli and server based applications in mind.
 
 ---
-# Quick Comparison
-### What else is available
-
-* GTK <https://github.com/gotk3/gotk3>
-    * desktop focused
-* Nuklear <https://github.com/golang-ui/nuklear>
-    * desktop focused
-* Fyne <https://github.com/fyne-io/fyne>
-    * basic mobile implementation (lacks sensor data, etc)
-* QT <https://github.com/therecipe/qt>
-    * fairly complete mobile implementation
-
-Please note this is a list of packages I've used *personally*.
-
-For a more exaustive list please go to
-<https://github.com/avelino/awesome-go#gui>
-
----
 # Pros & Cons
 ## *AKA is this too hipster for production*?
 
@@ -80,12 +86,11 @@ For a more exaustive list please go to
 # Pros & Cons
 
 ## Pros
-* Great workflow, can build and package a release for any platform (desktop, mobile, embedded) in moments.
+* Great workflow, can build and package a release for any platform in moments.
 
 * Flutters UI is declaritive and a part of the business logic. No need to fuss with widget declarations, complex callbacks, async threads, etc.
 
-* Can target any desktop specific features with golang, and provide any mobile specific features with flutter/golang-mobile.
-    * Can also have 2 seperate UI's for mobile and desktop experiences.
+* Can target any OS specific features with golang, and provide a clean interface across platforms with Flutter.
 
 * Flutter has been proven to be a stable platform for many of the large companies seen at <https://flutter.dev/showcase>
 
@@ -119,19 +124,16 @@ For a more exaustive list please go to
 
 ### Further Reading 
 
-* Flutter FFI (c/c++ engine)
-    * https://flutter.dev/docs/development/platform-integration/c-interop
-* Flutter Embedders
-    * https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedders
+https://flutter.dev/docs/development/platform-integration/c-interop
 
-* Go-Flutter Summary
-    * https://hover.build/blog/one-year-in/
+https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedders
 
-* Comparison to official flutter bindings
-    * https://github.com/go-flutter-desktop/go-flutter/issues/191#issuecomment-511384007
+https://hover.build/blog/one-year-in/
 
-* Golang GLFW layer
-    * https://github.com/go-gl/glfw
+https://github.com/go-flutter-desktop/go-flutter/issues/191#issuecomment-511384007
+
+https://github.com/go-gl/glfw
+
 
 ---
 
@@ -139,9 +141,8 @@ For a more exaustive list please go to
 
 ### TLDR; **No**
 
-* Essentially go-flutter at its core is just ~ 200 lines of code to compile to C byte code with GLFW support
-    * This is **not** complex, at an implementation level, just fancy tooling
-    * see <https://github.com/go-flutter-desktop/go-flutter/tree/640dcea647f47ceca0e3fb67166d2ea124a09f24>
+* Essentially go-flutter is just ~ 200 lines of code to compile to C byte code with GLFW support
+    * I.E. this is not complex, at a language level, just fancy tooling
 * All API's going to future flutter versions are deprecated but still functional
     * **ANY** currently working features will not break.
     * Go here for more information on flutter API versioning and compatibility policy
@@ -171,55 +172,12 @@ For a more exaustive list please go to
     ```
 
 ---
-# Go-Flutter Tooling
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+        var slideshow = remark.create();
+    </script>
+</body>
 
-## Flutter 
-Flutter provides a CLI tool to build and package mobile & web applications.
-
-List of commonly used commands:
-```
-# create your flutter app
-$ flutter create golang_flutter_demo
-```
-```
-# run your flutter app (android/ios)
-$ flutter run
-```
-```
-# build your bundled flutter app (android/ios)
-# stores builds in golang_flutter_demo/build/app/outputs
-$ flutter build apk
-$ flutter build ios
-```
-
-## Hover
-Hover is the CLI tool that implements basic running, building and packaging a go-flutter application.
-
-The options below match those provided by flutter:
-```
-# add desktop support to your flutter app
-$ hover init
-```
-```
-# run your golang flutter app (in native env)
-$ hover run
-```
-```
-# build your bundled go-flutter app
-# stores builds in golang_flutter_demo/go/build/outputs
-$ hover build linux
-$ hover build macos
-$ hover build windows
-```
-
----
-# Demo
-* Go to golang_flutter_demo directory
-* Run and build the app
-    * ```hover run```
----
-
-<!-- class: left, middle -->
-# Questions ?
-
----
+</html>

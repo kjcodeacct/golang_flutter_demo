@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Gophershop'),
     );
   }
 }
@@ -45,6 +45,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  
+  var loadedImagePath = '';
 
   void _incrementCounter() {
     setState(() {
@@ -102,9 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        // onPressed: () => _openFileExplorer(),
+        tooltip: 'Open Image',
+        child: Icon(Icons.folder_open),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
