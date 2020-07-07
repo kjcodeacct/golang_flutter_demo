@@ -1,4 +1,4 @@
-module gohershop/image_editor
+module github.com/kjcodeacct/golang_flutter_demo/gophershop/image_editor
 
 go 1.14
 
