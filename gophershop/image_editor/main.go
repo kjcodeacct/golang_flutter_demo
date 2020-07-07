@@ -1,7 +1,7 @@
 package image_editor
 
 import (
-	"fmt"
+	"log"
 	"path/filepath"
 	"strings"
 
@@ -9,7 +9,11 @@ import (
 	"github.com/anthonynsimon/bild/blur"
 	"github.com/anthonynsimon/bild/effect"
 	"github.com/anthonynsimon/bild/imgio"
+	"github.com/go-flutter-desktop/go-flutter/plugin"
 )
+
+// channelName is a reference to the go package used for this plugin
+const channelName = "gophershop/image_editor"
 
 type EditorInstance struct {
 	Brightness float64
@@ -21,7 +25,14 @@ type EditorInstance struct {
 	Filepath   string
 }
 
-func (this *EditorInstance) EditImage() {
+func (this *EditorInstance) InitPlugin(messenger plugin.BinaryMessenger) error {
+
+	channel := plugin.NewMethodChannel(messenger, channelName, plugin.StandardMethodCodec{})
+	channel.HandleFunc("editImage", this.EditImage)
+	return nil
+}
+
+func (this *EditorInstance) EditImage(arguments interface{}) (reply interface{}, err error) {
 
 	fileDir := filepath.Dir(this.Filepath)
 	fileName := filepath.Base(this.Filepath)
@@ -35,7 +46,7 @@ func (this *EditorInstance) EditImage() {
 
 	img, err := imgio.Open(this.Filepath)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -65,8 +76,9 @@ func (this *EditorInstance) EditImage() {
 
 	err = imgio.Save(outputFile, img, imgio.PNGEncoder())
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
+	return nil, nil
 }

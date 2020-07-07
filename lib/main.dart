@@ -97,25 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _clearCachedFiles() {
-    FilePicker.clearTemporaryFiles().then((result) {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          backgroundColor: result ? Colors.green : Colors.red,
-          content: Text((result
-              ? 'Temporary files removed with success.'
-              : 'Failed to clean temporary files')),
-        ),
-      );
-    });
-  }
-
-  void _selectFolder() {
-    FilePicker.getDirectoryPath().then((value) {
-      setState(() => _path = value);
-    });
-  }
-
   // image processing value placekeepers
   double brightnessVal = 0;
   double saturationVal = 0;

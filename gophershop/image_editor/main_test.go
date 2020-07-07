@@ -13,5 +13,5 @@ func TestEdit(t *testing.T) {
 		Filepath:   "./test.png",
 	}
 
-	testEditInstance.EditImage()
+	testEditInstance.EditImage(nil)
 }

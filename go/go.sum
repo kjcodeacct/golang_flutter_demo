@@ -21,6 +21,7 @@ github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORR
 github.com/gopherjs/gopherjs v0.0.0-20190915194858-d3ddacdb130f/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
 github.com/jtolds/gls v4.20.0+incompatible h1:xdiiI2gbIgH/gLH7ADydsJ1uDOEzR8yvV7C0MuV77Wo=
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
+github.com/kjcodeacct/golang_flutter_demo v0.0.0-20200707212401-3603ebd67347 h1:sJ0nN+aKRg905NwA7KmAo7CRwegOL53JfyquXFjNdAo=
 github.com/miguelpruivo/flutter_file_picker v1.4.3 h1:4no+PtzEL9ooQXXVI7lVKgva4/nZYKEPWlcVesmZdbk=
 github.com/miguelpruivo/flutter_file_picker/go v0.0.0-20200604215027-87ee48b7f3f6 h1:3KjDn35LWBOQ3nX6ba3ws+bzSNxWolozaqVXts/+n2g=
 github.com/miguelpruivo/flutter_file_picker/go v0.0.0-20200604215027-87ee48b7f3f6/go.mod h1:csuW+TFyYKtiUwNvcvhcpyX4quPI7Pvv0SUogdqCW4I=

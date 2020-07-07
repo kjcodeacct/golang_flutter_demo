@@ -211,7 +211,22 @@ $ hover build linux
 $ hover build macos
 $ hover build windows
 ```
+---
 
+# "Plugins"
+
+What is a "plugin" ?
+* It sounds fancy, but it's just an interface between go & dart.
+
+## What are these plugins you speak of?
+https://github.com/go-flutter-desktop/examples/tree/master/plugin_tutorial/go-plugin-example/complex
+
+
+---
+# Go Mobile
+
+
+## Will this bring all of the cool features go offers to mobile?
 ---
 # Demo
 * Go to golang_flutter_demo directory
