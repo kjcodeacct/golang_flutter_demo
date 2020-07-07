@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:developer' as developer;
 
 void main() => runApp(MyApp());
 
@@ -44,18 +47,65 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  
-  var loadedImagePath = '';
 
-  void _incrementCounter() {
+  // TODO - break file handling out into mixin or other state class
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String loadedImagePath = 'assets/default.png';
+  String workingImagePath;
+  String _path;
+  Map<String, String> _paths;
+  String _extension;
+  bool _loadingPath = false;
+  bool _multiPick = false;
+  FileType _pickingType = FileType.any;
+
+  void _openFileExplorer() async {
+    setState(() => _loadingPath = true);
+    try {
+      if (_multiPick) {
+        _path = null;
+        _paths = await FilePicker.getMultiFilePath(
+            type: _pickingType,
+            allowedExtensions: (_extension?.isNotEmpty ?? false)
+                ? _extension?.replaceAll(' ', '')?.split(',')
+                : null);
+      } else {
+        _paths = null;
+        _path = await FilePicker.getFilePath(
+            type: _pickingType,
+            allowedExtensions: (_extension?.isNotEmpty ?? false)
+                ? _extension?.replaceAll(' ', '')?.split(',')
+                : null);
+      }
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+
+    if (!mounted) return;
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _loadingPath = false;
+      loadedImagePath =
+          _path != null ? _path.split('/').last : _paths != null ? _paths.keys.toString() : '...';
+      print("loading image $loadedImagePath");
+    });
+  }
+
+  void _clearCachedFiles() {
+    FilePicker.clearTemporaryFiles().then((result) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          backgroundColor: result ? Colors.green : Colors.red,
+          content: Text((result
+              ? 'Temporary files removed with success.'
+              : 'Failed to clean temporary files')),
+        ),
+      );
+    });
+  }
+
+  void _selectFolder() {
+    FilePicker.getDirectoryPath().then((value) {
+      setState(() => _path = value);
     });
   }
 
@@ -97,14 +147,14 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              loadedImagePath,
               style: Theme.of(context).textTheme.display1,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        // onPressed: () => _openFileExplorer(),
+        onPressed: () => _openFileExplorer(),
         tooltip: 'Open Image',
         child: Icon(Icons.folder_open),
       ), // This trailing comma makes auto-formatting nicer for build methods.
