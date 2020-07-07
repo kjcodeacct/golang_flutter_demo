@@ -118,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // image processing value placekeepers
   double brightnessVal = 0;
+  double saturationVal = 0;
   double hueVal = 0;
   double blurVal = 0;
   bool invertImg = false;
@@ -180,6 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 1,
                 child: Text(
                   'File open $loadedImagePath',
+                  style: TextStyle(fontWeight: FontWeight.bold)
                 ),
               ),
               Flexible(
@@ -199,6 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 4,
                 child: ListView(
                   scrollDirection: globalScrollDirection,
+                  shrinkWrap: true,
                   children: [
                     Text(
                       'Brightness',
@@ -219,8 +222,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       onChanged: (value) {
                         setState(() => hueVal = value);
                       },
-                      min: 0,
-                      max: 10,
+                      min: -100,
+                      max: 100,
                     ),
                     Text(
                       'Blur',
@@ -229,6 +232,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       value: blurVal,
                       onChanged: (value) {
                         setState(() => blurVal = value);
+                      },
+                      min: 0,
+                      max: 10,
+                    ),
+                    Text(
+                      'Saturation',
+                    ),
+                    Slider(
+                      value: saturationVal,
+                      onChanged: (value) {
+                        setState(() => saturationVal = value);
                       },
                       min: 0,
                       max: 10,
@@ -260,7 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         });
                       },
                       controlAffinity: ListTileControlAffinity.leading,
-                    )
+                    ),
                   ],
                 ),
               ),

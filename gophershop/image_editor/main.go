@@ -2,6 +2,8 @@ package image_editor
 
 import (
 	"fmt"
+	"path/filepath"
+	"strings"
 
 	"github.com/anthonynsimon/bild/adjust"
 	"github.com/anthonynsimon/bild/blur"
@@ -11,6 +13,7 @@ import (
 
 type EditorInstance struct {
 	Brightness float64
+	Saturation float64
 	Hue        int
 	Blur       float64
 	Invert     bool
@@ -19,6 +22,16 @@ type EditorInstance struct {
 }
 
 func (this *EditorInstance) EditImage() {
+
+	fileDir := filepath.Dir(this.Filepath)
+	fileName := filepath.Base(this.Filepath)
+
+	fileName = "output_" + fileName
+	outputFile := filepath.Join(fileDir, fileName)
+	inputFileExt := filepath.Ext(this.Filepath)
+
+	outputFile = strings.Replace(outputFile, inputFileExt, ".png",
+		strings.LastIndex(fileName, inputFileExt))
 
 	img, err := imgio.Open(this.Filepath)
 	if err != nil {
@@ -46,7 +59,11 @@ func (this *EditorInstance) EditImage() {
 		img = adjust.Hue(img, this.Hue)
 	}
 
-	err = imgio.Save("output.png", img, imgio.PNGEncoder())
+	if this.Saturation > 0 {
+		img = adjust.Saturation(img, this.Saturation)
+	}
+
+	err = imgio.Save(outputFile, img, imgio.PNGEncoder())
 	if err != nil {
 		fmt.Println(err)
 		return
