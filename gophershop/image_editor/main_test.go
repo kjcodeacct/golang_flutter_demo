@@ -1,8 +1,9 @@
 package image_editor_test
 
 import (
-	image_editor "gohershop/image"
 	"testing"
+
+	image_editor "github.com/kjcodeacct/golang_flutter_demo/gophershop/image_editor"
 )
 
 func TestEdit(t *testing.T) {
