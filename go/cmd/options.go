@@ -13,5 +13,5 @@ var options = []flutter.Option{
 	// load file picker plugin
 	flutter.AddPlugin(&file_picker.FilePickerPlugin{}),
 	// load image_editor package created above
-	flutter.AddPlugin(&image_editor.EditorInstance{}),
+	flutter.AddPlugin(&image_editor.Editor{}),
 }

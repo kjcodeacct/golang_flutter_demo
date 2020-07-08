@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:file_picker/file_picker.dart';
@@ -53,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // TODO - break file handling out into mixin or other state class
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String loadedImagePath = 'assets/default.png';
+  String originalImagePath;
   File loadedImage;
 
   String workingImagePath;
@@ -93,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
         loadedImagePath = _path;
       }
 
+      originalImagePath = loadedImagePath;
       print("loading image $loadedImagePath");
     });
   }
@@ -105,6 +109,34 @@ class _MyHomePageState extends State<MyHomePage> {
   bool invertImg = false;
   bool grayScale = false;
 
+  static const image_editor_lib = const MethodChannel('gophershop/image_editor');
+
+  void _editImage() async {
+    print("opening and editing image...");
+    // this maps directly to the editorInstance found in gophershop/image_editor/main.go:19
+    var editorInstance = 
+      {
+        "brightness": brightnessVal,
+        "saturation": saturationVal,
+        "hue": hueVal,
+        "blur": blurVal,
+        "invert": invertImg,
+        "grayscale": grayScale,
+        "filepath": originalImagePath
+      };
+
+    var jsonText = jsonEncode(editorInstance);
+    try {
+      loadedImagePath = await image_editor_lib.invokeMethod("editImage", jsonText);
+    } on PlatformException catch (e) {
+      print("error:" + e.toString());
+    } finally {
+      print("$loadedImagePath edited...");
+      loadedImage = new File(loadedImagePath);
+    }
+    
+  }
+
   var globalScrollDirection = Axis.horizontal;
 
   @override
@@ -114,7 +146,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    loadedImage = new File(loadedImagePath);
 
     var appSize = MediaQuery.of(context).size.width;
     if (appSize >= 720) {
@@ -147,6 +178,17 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () => _openFileExplorer(),
         )));
 
+    // call image editing plugin
+
+    if (originalImagePath != null) {
+      print("ORIG $originalImagePath");
+      _editImage();
+    }
+    
+    sleep(const Duration(milliseconds:500));
+    loadedImage = new File(loadedImagePath);
+  
+
     // rebuild ui
     return Scaffold(
       appBar: AppBar(
@@ -160,10 +202,8 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Flexible(
                 flex: 1,
-                child: Text(
-                  'File open $loadedImagePath',
-                  style: TextStyle(fontWeight: FontWeight.bold)
-                ),
+                child: Text('File open $loadedImagePath',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               Flexible(
                   flex: 12,

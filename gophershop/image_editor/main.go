@@ -3,6 +3,7 @@ package image_editor
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -40,7 +41,7 @@ func (this *Editor) InitPlugin(messenger plugin.BinaryMessenger) error {
 func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
 
 	dartMsg := args.(string)
-	log.Println("golang:", dartMsg)
+	log.Println("golang:", "received", dartMsg)
 	editorInstance := &EditorInstance{}
 	err := json.Unmarshal([]byte(dartMsg), &editorInstance)
 	if err != nil {
@@ -69,6 +70,13 @@ func (this *EditorInstance) EditImage() (string, error) {
 	outputFile = strings.Replace(outputFile, inputFileExt, ".png",
 		strings.LastIndex(fileName, inputFileExt))
 
+	if _, err := os.Stat(outputFile); err == nil {
+		err := os.Remove(outputFile)
+
+		if err != nil {
+			return "", err
+		}
+	}
 	img, err := imgio.Open(this.Filepath)
 	if err != nil {
 		return "", err
