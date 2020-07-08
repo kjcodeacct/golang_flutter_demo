@@ -118,5 +118,6 @@ func (this *EditorInstance) EditImage() (string, error) {
 		return "", err
 	}
 
+	log.Println("golang: created image", outputFilePath)
 	return outputFilePath, nil
 }
