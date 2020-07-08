@@ -19,6 +19,9 @@ import (
 const channelName = "gophershop/image_editor"
 const editorFilePrefix = "gophershop_output_"
 
+// this could be handled alot nicer, but is convenient
+var currentFile = ""
+
 type EditorInstance struct {
 	Brightness float64 `json:"brightness"`
 	Saturation float64 `json:"saturation"`
@@ -57,6 +60,8 @@ func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
 		return nil, err
 	}
 
+	currentFile = outputFilePath
+
 	// *after having successfully generated a new edited image, delete the old one
 	editFileDir := filepath.Dir(editorInstance.Filepath)
 	err = filepath.Walk(editFileDir, cleanupEditorFiles)
@@ -87,6 +92,7 @@ func (this *EditorInstance) EditImage() (string, error) {
 			return "", err
 		}
 	}
+
 	img, err := imgio.Open(this.Filepath)
 	if err != nil {
 		return "", err
@@ -127,9 +133,11 @@ func (this *EditorInstance) EditImage() (string, error) {
 func cleanupEditorFiles(path string, f os.FileInfo, err error) error {
 
 	if strings.HasPrefix(f.Name(), editorFilePrefix) {
-		err = os.Remove(path)
-		if err != nil {
-			return err
+		if path != currentFile {
+			err = os.Remove(path)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
