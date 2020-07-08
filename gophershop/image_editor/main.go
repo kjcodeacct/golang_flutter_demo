@@ -20,7 +20,7 @@ const channelName = "gophershop/image_editor"
 type EditorInstance struct {
 	Brightness float64 `json:"brightness"`
 	Saturation float64 `json:"saturation"`
-	Hue        int     `json:"hue"`
+	Hue        float64 `json:"hue"`
 	Blur       float64 `json:"blur"`
 	Invert     bool    `json:"invert"`
 	Grayscale  bool    `json:"grayscale"`
@@ -94,7 +94,7 @@ func (this *EditorInstance) EditImage() (string, error) {
 	}
 
 	if this.Hue != 0 {
-		img = adjust.Hue(img, this.Hue)
+		img = adjust.Hue(img, int(this.Hue))
 	}
 
 	if this.Saturation > 0 {
