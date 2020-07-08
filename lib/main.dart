@@ -179,12 +179,11 @@ class _MyHomePageState extends State<MyHomePage> {
         )));
 
     // call image editing plugin
-
     if (originalImagePath != null) {
-      print("ORIG $originalImagePath");
       _editImage();
     }
-    
+    // TODO reload image and not re-open
+    // pause for a moment to let the edited image write
     sleep(const Duration(milliseconds:500));
     loadedImage = new File(loadedImagePath);
   

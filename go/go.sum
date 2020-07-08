@@ -32,8 +32,6 @@ github.com/hashicorp/hcl v1.0.0/go.mod h1:E5yfLk+7swimpb2L/Alb/PJmXilQ/rhwaUYs4T
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
 github.com/jtolds/gls v4.20.0+incompatible h1:xdiiI2gbIgH/gLH7ADydsJ1uDOEzR8yvV7C0MuV77Wo=
 github.com/jtolds/gls v4.20.0+incompatible/go.mod h1:QJZ7F/aHp+rZTRtaJ1ow/lLfFfVYBRgL+9YlvaHOwJU=
-github.com/kjcodeacct/golang_flutter_demo/gophershop/image_editor v0.0.0-20200708012954-92460a8e870e h1:nIAlIhJ3VgjSJNbVXK85L+h0hHLUhc+/Doy2q3NKONg=
-github.com/kjcodeacct/golang_flutter_demo/gophershop/image_editor v0.0.0-20200708012954-92460a8e870e/go.mod h1:WeKJbJIHSliStalqN78fi8CCDNqEV5TmyZbwQQfkEs4=
 github.com/kjcodeacct/golang_flutter_demo/gophershop/image_editor v0.0.0-20200708013952-e2eee28ecc20 h1:MPlcOhVxt6XNHgW4woXAES7qR59Im3ovMlrDkb7tNiY=
 github.com/kjcodeacct/golang_flutter_demo/gophershop/image_editor v0.0.0-20200708013952-e2eee28ecc20/go.mod h1:WeKJbJIHSliStalqN78fi8CCDNqEV5TmyZbwQQfkEs4=
 github.com/magiconair/properties v1.8.0/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
