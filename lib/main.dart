@@ -114,16 +114,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void _editImage() async {
     print("opening and editing image...");
     // this maps directly to the editorInstance found in gophershop/image_editor/main.go:19
-    var editorInstance = 
-      {
-        "brightness": brightnessVal,
-        "saturation": saturationVal,
-        "hue": hueVal,
-        "blur": blurVal,
-        "invert": invertImg,
-        "grayscale": grayScale,
-        "filepath": originalImagePath
-      };
+    var editorInstance = {
+      "brightness": brightnessVal,
+      "saturation": saturationVal,
+      "hue": hueVal,
+      "blur": blurVal,
+      "invert": invertImg,
+      "grayscale": grayScale,
+      "filepath": originalImagePath
+    };
 
     var jsonText = jsonEncode(editorInstance);
     try {
@@ -134,7 +133,6 @@ class _MyHomePageState extends State<MyHomePage> {
       print("$loadedImagePath edited...");
       loadedImage = new File(loadedImagePath);
     }
-    
   }
 
   var globalScrollDirection = Axis.horizontal;
@@ -184,9 +182,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     // TODO reload image and not re-open
     // pause for a moment to let the edited image write
-    sleep(const Duration(milliseconds:500));
+    sleep(const Duration(milliseconds: 500));
     loadedImage = new File(loadedImagePath);
-  
+
+    setState(() {
+      print("refreshing image...");
+      imageCache.clear();
+      imageCache.clearLiveImages();
+    });
 
     // rebuild ui
     return Scaffold(
