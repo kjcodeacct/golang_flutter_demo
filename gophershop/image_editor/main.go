@@ -1,7 +1,9 @@
 package image_editor
 
 import (
-	"log"
+	"encoding/json"
+	"errors"
+	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -16,23 +18,49 @@ import (
 const channelName = "gophershop/image_editor"
 
 type EditorInstance struct {
-	Brightness float64
-	Saturation float64
-	Hue        int
-	Blur       float64
-	Invert     bool
-	Grayscale  bool
-	Filepath   string
+	Brightness float64 `json:"brightness"`
+	Saturation float64 `json:"saturation"`
+	Hue        int     `json:"hue"`
+	Blur       float64 `json:"blur"`
+	Invert     bool    `json:"invert"`
+	Grayscale  bool    `json:"grayscale"`
+	Filepath   string  `json:"filepath"`
 }
 
-func (this *EditorInstance) InitPlugin(messenger plugin.BinaryMessenger) error {
+type Editor struct {
+	channel *plugin.MethodChannel
+}
+
+func (this *Editor) InitPlugin(messenger plugin.BinaryMessenger) error {
 
 	channel := plugin.NewMethodChannel(messenger, channelName, plugin.StandardMethodCodec{})
-	channel.HandleFunc("editImage", this.EditImage)
+	channel.HandleFunc("editImage", this.parseEdit)
 	return nil
 }
 
-func (this *EditorInstance) EditImage(arguments interface{}) (reply interface{}, err error) {
+func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
+
+	dartMsg := args.(string)
+	fmt.Println("asdfasdfasdf")
+	editorInstance := &EditorInstance{}
+	err := json.Unmarshal([]byte(dartMsg), &editorInstance)
+	if err != nil {
+		return nil, err
+	}
+
+	if editorInstance.Filepath != "BOB" {
+		return nil, errors.New("WRONG WRONG WRONG")
+	}
+
+	outputFileName, err := editorInstance.EditImage()
+	if err != nil {
+		return nil, err
+	}
+
+	return outputFileName, nil
+}
+
+func (this *EditorInstance) EditImage() (string, error) {
 
 	fileDir := filepath.Dir(this.Filepath)
 	fileName := filepath.Base(this.Filepath)
@@ -46,8 +74,7 @@ func (this *EditorInstance) EditImage(arguments interface{}) (reply interface{},
 
 	img, err := imgio.Open(this.Filepath)
 	if err != nil {
-		log.Println(err)
-		return
+		return "", err
 	}
 
 	if this.Invert {
@@ -76,9 +103,8 @@ func (this *EditorInstance) EditImage(arguments interface{}) (reply interface{},
 
 	err = imgio.Save(outputFile, img, imgio.PNGEncoder())
 	if err != nil {
-		log.Println(err)
-		return
+		return "", err
 	}
 
-	return nil, nil
+	return outputFile, nil
 }
