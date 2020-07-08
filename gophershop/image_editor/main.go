@@ -2,8 +2,7 @@ package image_editor
 
 import (
 	"encoding/json"
-	"errors"
-	"fmt"
+	"log"
 	"path/filepath"
 	"strings"
 
@@ -41,19 +40,17 @@ func (this *Editor) InitPlugin(messenger plugin.BinaryMessenger) error {
 func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
 
 	dartMsg := args.(string)
-	fmt.Println("asdfasdfasdf")
+	log.Println("golang:", dartMsg)
 	editorInstance := &EditorInstance{}
 	err := json.Unmarshal([]byte(dartMsg), &editorInstance)
 	if err != nil {
+		log.Println("golang:", err.Error())
 		return nil, err
-	}
-
-	if editorInstance.Filepath != "BOB" {
-		return nil, errors.New("WRONG WRONG WRONG")
 	}
 
 	outputFileName, err := editorInstance.EditImage()
 	if err != nil {
+		log.Println("golang:", err.Error())
 		return nil, err
 	}
 
