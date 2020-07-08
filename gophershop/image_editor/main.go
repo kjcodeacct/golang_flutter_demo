@@ -54,13 +54,6 @@ func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	// cleanup previously edited image, since it is cached in the flutter instance
-	editFileDir := filepath.Dir(editorInstance.Filepath)
-	err = filepath.Walk(editFileDir, cleanupEditorFiles)
-	if err != nil {
-		return nil, err
-	}
-
 	outputFilePath, err := editorInstance.EditImage()
 	if err != nil {
 		log.Println("golang:", err.Error())
@@ -72,7 +65,7 @@ func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
 
 func (this *EditorInstance) EditImage() (string, error) {
 
-	fileDir := filepath.Dir(this.Filepath)
+	fileDir := os.TempDir()
 	fileName := filepath.Base(this.Filepath)
 
 	fileUUID := uuid.New()
@@ -126,16 +119,4 @@ func (this *EditorInstance) EditImage() (string, error) {
 	}
 
 	return outputFilePath, nil
-}
-
-func cleanupEditorFiles(path string, f os.FileInfo, err error) error {
-
-	if strings.HasPrefix(f.Name(), editorFilePrefix) {
-		err = os.Remove(path)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
