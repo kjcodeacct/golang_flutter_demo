@@ -54,18 +54,16 @@ func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	outputFilePath, err := editorInstance.EditImage()
-	if err != nil {
-		log.Println("golang:", err.Error())
-		return nil, err
-	}
-
-	currentFile = outputFilePath
-
-	// *after having successfully generated a new edited image, delete the old one
+	// cleanup previously edited image, since it is cached in the flutter instance
 	editFileDir := filepath.Dir(editorInstance.Filepath)
 	err = filepath.Walk(editFileDir, cleanupEditorFiles)
 	if err != nil {
+		return nil, err
+	}
+
+	outputFilePath, err := editorInstance.EditImage()
+	if err != nil {
+		log.Println("golang:", err.Error())
 		return nil, err
 	}
 
@@ -133,11 +131,9 @@ func (this *EditorInstance) EditImage() (string, error) {
 func cleanupEditorFiles(path string, f os.FileInfo, err error) error {
 
 	if strings.HasPrefix(f.Name(), editorFilePrefix) {
-		if path != currentFile {
-			err = os.Remove(path)
-			if err != nil {
-				return err
-			}
+		err = os.Remove(path)
+		if err != nil {
+			return err
 		}
 	}
 
