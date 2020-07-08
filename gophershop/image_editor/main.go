@@ -12,10 +12,12 @@ import (
 	"github.com/anthonynsimon/bild/effect"
 	"github.com/anthonynsimon/bild/imgio"
 	"github.com/go-flutter-desktop/go-flutter/plugin"
+	"github.com/pborman/uuid"
 )
 
 // channelName is a reference to the go package used for this plugin
 const channelName = "gophershop/image_editor"
+const editorFilePrefix = "gophershop_output_"
 
 type EditorInstance struct {
 	Brightness float64 `json:"brightness"`
@@ -49,13 +51,20 @@ func (this *Editor) parseEdit(args interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	outputFileName, err := editorInstance.EditImage()
+	outputFilePath, err := editorInstance.EditImage()
 	if err != nil {
 		log.Println("golang:", err.Error())
 		return nil, err
 	}
 
-	return outputFileName, nil
+	// *after having successfully generated a new edited image, delete the old one
+	editFileDir := filepath.Dir(editorInstance.Filepath)
+	err = filepath.Walk(editFileDir, cleanupEditorFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	return outputFilePath, nil
 }
 
 func (this *EditorInstance) EditImage() (string, error) {
@@ -63,15 +72,16 @@ func (this *EditorInstance) EditImage() (string, error) {
 	fileDir := filepath.Dir(this.Filepath)
 	fileName := filepath.Base(this.Filepath)
 
-	fileName = "output_" + fileName
-	outputFile := filepath.Join(fileDir, fileName)
+	fileUUID := uuid.New()
+	fileName = editorFilePrefix + fileUUID + "_" + fileName
+	outputFilePath := filepath.Join(fileDir, fileName)
 	inputFileExt := filepath.Ext(this.Filepath)
 
-	outputFile = strings.Replace(outputFile, inputFileExt, ".png",
+	outputFilePath = strings.Replace(outputFilePath, inputFileExt, ".png",
 		strings.LastIndex(fileName, inputFileExt))
 
-	if _, err := os.Stat(outputFile); err == nil {
-		err := os.Remove(outputFile)
+	if _, err := os.Stat(outputFilePath); err == nil {
+		err := os.Remove(outputFilePath)
 
 		if err != nil {
 			return "", err
@@ -106,10 +116,22 @@ func (this *EditorInstance) EditImage() (string, error) {
 		img = adjust.Saturation(img, this.Saturation)
 	}
 
-	err = imgio.Save(outputFile, img, imgio.PNGEncoder())
+	err = imgio.Save(outputFilePath, img, imgio.PNGEncoder())
 	if err != nil {
 		return "", err
 	}
 
-	return outputFile, nil
+	return outputFilePath, nil
+}
+
+func cleanupEditorFiles(path string, f os.FileInfo, err error) error {
+
+	if strings.HasPrefix(f.Name(), editorFilePrefix) {
+		err = os.Remove(path)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

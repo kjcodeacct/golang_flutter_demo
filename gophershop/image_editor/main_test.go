@@ -1,18 +1,29 @@
-package image_editor_test
+package image_editor
 
 import (
+	"path/filepath"
 	"testing"
 
-	image_editor "github.com/kjcodeacct/golang_flutter_demo/gophershop/image_editor"
+	"github.com/stretchr/testify/require"
 )
 
+func TestFileCleanup(t *testing.T) {
+
+	editFileDir := filepath.Dir("./")
+	err := filepath.Walk(editFileDir, cleanupEditorFiles)
+	require.NoError(t, err)
+
+}
 func TestEdit(t *testing.T) {
-	testEditInstance := &image_editor.EditorInstance{
+	testEditInstance := &EditorInstance{
 		Hue:        -50,
 		Saturation: 1.6,
 		Invert:     true,
 		Filepath:   "./test.png",
 	}
 
-	testEditInstance.EditImage(nil)
+	testFilePath, err := testEditInstance.EditImage()
+	require.NoError(t, err)
+
+	t.Log("created file:", testFilePath)
 }
