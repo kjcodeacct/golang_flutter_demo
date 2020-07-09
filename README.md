@@ -7,8 +7,8 @@
 
 <!-- class: left, middle -->
 # Prerequisites
- * Know golang ✅
- * Have introductory knowledge of MVVM, MVC, MVP, etc (UI development) ✅
+ * ✅ Know golang 
+ * ✅ Have introductory knowledge of MVVM, MVC, MVP, etc (UI development) 
 
 ---
 
@@ -122,14 +122,15 @@ For a more exaustive list please go to
 
 # How it works
 ### High Level
-![High Level Diagram](https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/high-level-diagram.png)
+<img src="https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/high-level-diagram.png" width="800" heigh="600">
 
 
 ---
 
 # How it works
 ### In depth
-![In Depth Diagram](https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/flutter-system.png)
+<img src="https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/flutter-system.png" width="800" heigh="600">
+<!-- ![In Depth Diagram]() -->
 ---
 
 <!-- class: left, middle -->
@@ -273,9 +274,16 @@ https://github.com/go-flutter-desktop/examples/tree/master/plugin_tutorial/go-pl
 
 # Demo
 
-![Demo](https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/demo.png)
+<img src="https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/demo.png" width="800" heigh="600">
 
 ---
+
+# Finally Some Code!
+
+Lets see what it takes to run this.
+
+
+--- 
 
 # Creating the Binding
 
@@ -283,6 +291,7 @@ https://github.com/go-flutter-desktop/examples/tree/master/plugin_tutorial/go-pl
 
 Create a go package with plugin bindings
 > gophershop/image_editor/main.go
+
 ```go
 func (this *Editor) InitPlugin(messenger plugin.BinaryMessenger) error {
 
@@ -291,7 +300,6 @@ func (this *Editor) InitPlugin(messenger plugin.BinaryMessenger) error {
 	return nil
 }
 ```
-
 ---
 # Creating the Binding
 
@@ -302,7 +310,9 @@ Add package
 ```go
 flutter.AddPlugin(&image_editor.Editor{}),
 ```
+
 ---
+
 # Using the Binding
 
 Call the plugin binding you made from your flutter code
@@ -313,9 +323,10 @@ static const image_editor_lib = const MethodChannel('gophershop/image_editor');
 ...
 loadedImagePath = await image_editor_lib.invokeMethod("editImage", jsonText);
 ```
+
 ---
 
-# Quick Tips for Plugins
+# Quick Tips on Writing Plugins
 * use a common formats for communication i.e not raw structs
     * json, protobuffs, etc
 * write go code the same way as you would normally, error handling etc.
@@ -326,7 +337,22 @@ loadedImagePath = await image_editor_lib.invokeMethod("editImage", jsonText);
 
 ---
 
+# Whats Next ?
+1. Checkout the [golang_flutter_demo repo](https://github.com/kjcodeacct/golang_flutter_demo)
+2. Add a different image editing feature from the [provided image package](https://github.com/anthonynsimon/bild)
+3. Test the go-flutter build system and see if it's right for you.
+4. ???
+4. Become a hermit for the weekend and make a really cool app with go-flutter.
+
+---
+
 <!-- class: left, middle -->
 # Questions ?
 
+---
+# Attribution
+
+* https://github.com/flutter/flutter
+* https://github.com/go-flutter-desktop/go-flutter
+* https://github.com/anthonynsimon/bild
 ---
