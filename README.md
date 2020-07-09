@@ -37,6 +37,9 @@ This could range from any of the following situations:
 * You know golang, and want to get into mobile development or vice-versa.
 
 ---
+
+<!-- class: left, middle -->
+
 # Why?
 
 ## Flutter
@@ -55,6 +58,9 @@ This could range from any of the following situations:
 * Has primarily been developed with cli and server based applications in mind.
 
 ---
+
+<!-- class: left, middle -->
+
 # Quick Comparison
 ### What else is available
 
@@ -73,10 +79,16 @@ For a more exaustive list please go to
 <https://github.com/avelino/awesome-go#gui>
 
 ---
+
+<!-- class: left, middle -->
+
 # Pros & Cons
 ## *AKA is this too hipster for production*?
 
 ---
+
+<!-- class: left, middle -->
+
 # Pros & Cons
 
 ## Pros
@@ -90,6 +102,9 @@ For a more exaustive list please go to
 * Flutter has been proven to be a stable platform for many of the large companies seen at <https://flutter.dev/showcase>
 
 ---
+
+<!-- class: left, middle -->
+
 # Pros & Cons
 
 ## Cons
@@ -111,29 +126,45 @@ For a more exaustive list please go to
 
 
 ---
+
 # How it works
 ### In depth
 ![In Depth Diagram](https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/flutter-system.png)
+---
+
+<!-- class: left, middle -->
+
+# Go Mobile
+
+## Will this bring all of the cool features go offers to mobile?
+Yes, mostly.
+
+Limitations:
+* Go mobile lacks some features
+    * not all packages are compatible, and assume a desktop environment
+
 ---
 # How it works
 
 ### Further Reading 
 
 * Flutter FFI (c/c++ engine)
-    * https://flutter.dev/docs/development/platform-integration/c-interop
+    * <https://flutter.dev/docs/development/platform-integration/c-interop>
 * Flutter Embedders
-    * https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedders
+    * <https://github.com/flutter/flutter/wiki/Custom-Flutter-Engine-Embedders>
 
 * Go-Flutter Summary
-    * https://hover.build/blog/one-year-in/
+    * <https://hover.build/blog/one-year-in/>
 
 * Comparison to official flutter bindings
-    * https://github.com/go-flutter-desktop/go-flutter/issues/191#issuecomment-511384007
+    * <https://github.com/go-flutter-desktop/go-flutter/issues/191#issuecomment-511384007>
 
 * Golang GLFW layer
-    * https://github.com/go-gl/glfw
+    * <https://github.com/go-gl/glfw>
 
 ---
+
+<!-- class: left, top -->
 
 # Is this too hipster for production?
 
@@ -148,6 +179,7 @@ For a more exaustive list please go to
         * <https://flutter.dev/docs/resources/compatibility>
 
 ---
+
 <!-- class: left, top -->
 
 # Getting Started
@@ -171,6 +203,9 @@ For a more exaustive list please go to
     ```
 
 ---
+
+<!-- class: left, top -->
+
 # Go-Flutter Tooling
 
 ## Flutter 
@@ -191,6 +226,12 @@ $ flutter run
 $ flutter build apk
 $ flutter build ios
 ```
+
+---
+
+<!-- class: left, top -->
+
+# Go-Flutter Tooling
 
 ## Hover
 Hover is the CLI tool that implements basic running, building and packaging a go-flutter application.
@@ -213,25 +254,76 @@ $ hover build windows
 ```
 ---
 
-# "Plugins"
+# Go-Flutter "Plugins"
 
 What is a "plugin" ?
 * It sounds fancy, but it's just an interface between go & dart.
 
-## What are these plugins you speak of?
+## An example plugin
 https://github.com/go-flutter-desktop/examples/tree/master/plugin_tutorial/go-plugin-example/complex
 
-
 ---
-# Go Mobile
 
-
-## Will this bring all of the cool features go offers to mobile?
----
 # Demo
 * Go to golang_flutter_demo directory
 * Run and build the app
     * ```hover run```
+
+---
+
+# Demo
+
+![Demo](https://raw.githubusercontent.com/kjcodeacct/golang_flutter_demo/master/assets/demo.png)
+
+---
+
+# Creating the Binding
+
+## Plugin
+
+Create a go package with plugin bindings
+> gophershop/image_editor/main.go
+```go
+func (this *Editor) InitPlugin(messenger plugin.BinaryMessenger) error {
+
+	channel := plugin.NewMethodChannel(messenger, channelName, plugin.StandardMethodCodec{})
+	channel.HandleFunc("editImage", this.parseEdit)
+	return nil
+}
+```
+
+---
+# Creating the Binding
+
+## Register the Plugin
+
+Add package
+> go/cmd/options.go
+```go
+flutter.AddPlugin(&image_editor.Editor{}),
+```
+---
+# Using the Binding
+
+Call the plugin binding you made from your flutter code
+> lib/main.dart
+```dart
+static const image_editor_lib = const MethodChannel('gophershop/image_editor');
+...
+...
+loadedImagePath = await image_editor_lib.invokeMethod("editImage", jsonText);
+```
+---
+
+# Quick Tips for Plugins
+* use a common formats for communication i.e not raw structs
+    * json, protobuffs, etc
+* write go code the same way as you would normally, error handling etc.
+    * the plugin is not special, write it with your standard good practices for golang
+* if you are concerned about the layout mobile v desktop
+    * mobile - main.dart
+    * desktop - main_desktop.dart
+
 ---
 
 <!-- class: left, middle -->
